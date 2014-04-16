@@ -57,6 +57,32 @@ get '/testdb' => sub {
 
 };
 
+#mobacon program-------------------------------------
+
+#data reset
+get '/reset' => sub {
+    my $c = shift;
+    my $db = $c->db;
+    my $txn = $db->txn_scope;
+
+    my $last_id = $db->last_insert_id;
+  
+    $db->query(
+        q{DELETE FROM user_info },
+        $last_id
+    );
+    $txn->commit;
+ 
+    $db->query(
+        q{DELETE FROM lend_info },
+        $last_id
+    );  
+    $txn->commit;
+   
+     return $c->create_response(204, [], ['Data reset!']);
+};
+
+#----------------------------------------------------
 
 # load plugins
 __PACKAGE__->load_plugin('Web::CSRFDefender' => {

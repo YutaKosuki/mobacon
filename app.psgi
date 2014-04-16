@@ -85,7 +85,7 @@ post '/admin/reset' => sub {
 #----------------------------------------------------
 
 # load plugins
-__PACKAGE__->load_plugin('Web::CSRFDefender' => {
+#__PACKAGE__->load_plugin('Web::CSRFDefender' => {
     post_only => 1,
 });
  __PACKAGE__->load_plugin('DBI');

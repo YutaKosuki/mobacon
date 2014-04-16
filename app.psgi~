@@ -165,6 +165,8 @@ sub db {
 sub _db_connect {
     my $self = shift;
 
+    my $datasource = sprintf('dbi:mysql:%s', 'heroku_5fd41a1a4ef843f:us-cdbr-east-05.cleardb.net');
+
     my $dbh = DBIx::Sunny->connect($datasource, 'b33182896a31b7', 'a87bd966', +{
         RaiseError        => 1,
         mysql_enable_utf8 => 1,} );

@@ -79,7 +79,7 @@ post '/admin/reset' => sub {
     );  
     $txn->commit;
    
-     return $c->create_response(204, [], ['Data reset!']);
+     return $c->create_response(204, [], ['OK']);
 };
 
 #----------------------------------------------------

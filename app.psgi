@@ -98,7 +98,7 @@ post '/user/register' => sub {
     my $username = $c->req->param('username');
     my $password = $c->req->param('password');
 
-    my $max_id = $c->db->select_row(
+    my $max_id = $c->db->select_one(
         q{SELECT MAX(id) FROM user_info}
     );
 

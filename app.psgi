@@ -37,6 +37,25 @@ get '/testreturnjson' => sub {
     return $c->render_json(+{foo => 'bar'});
 };
 
+get '/testdb' => sub {
+    my $c = shift;
+    my $db = $c->db;
+    my $txn = $db->txn_scope;
+
+    $db->query(
+        q{INSERT INTO userinfo (id, name, password, num_lend) VALUES (1, 'Yuta', 'aaa', 0)}
+    );
+    my $last_id = $db->last_insert_id;
+
+    $txn->commit;
+
+    my $row = $db->select_row(
+        q{SELECT * FROM userinfo LIMIT 1},
+        $last_id
+    );
+    return $c->render_json($row);
+
+};
 
 
 # load plugins
@@ -50,6 +69,24 @@ __PACKAGE__->load_plugin('Web::CSRFDefender' => {
 __PACKAGE__->enable_session();
 
 __PACKAGE__->to_app(handle_static => 1);
+
+use DBIx::Sunny;
+sub db {
+    my $self = shift;
+    return $self->{db} ||= $self->_db_connect;
+}
+
+sub _db_connect {
+    my $self = shift;
+
+    my $datasource = sprintf('dbi:mysql:%s', 'heroku_5fd41a1a4ef843f:us-cdbr-east-05.cleardb.net');
+
+    my $dbh = DBIx::Sunny->connect($datasource, 'b33182896a31b7', 'a87bd966', +{
+        RaiseError        => 1,
+        mysql_enable_utf8 => 1,} );
+
+    return $dbh;
+}
 
 __DATA__
 

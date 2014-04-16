@@ -40,15 +40,6 @@ get '/testreturnjson' => sub {
 };
 
 
-my $dsn = 'heroku_5fd41a1a4ef843f';
-my $user = 'b33182896a31b7';
-my $passwd = 'a87bd966';
-my $dbh = DBI->connect($dsn, $user, $passed, {'us-cdbr-east-05.cleardb.net' => 1,});
-my $teng
-
-get '/testdb' => sub {
-
-};
 
 # load plugins
 __PACKAGE__->load_plugin('Web::CSRFDefender' => {

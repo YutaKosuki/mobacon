@@ -34,7 +34,13 @@ __PACKAGE__->load_plugins(qw/Web::JSON/);
 
 get '/testreturnjson' => sub {
     my $c = shift;
-    return $c->render_json(+{foo => 'bar'});
+
+    my $max_id = $c->db->select_row(
+        q{SELECT MAX(id) FROM user_info}
+    );
+
+
+    return $c->render_json($max_id);
 };
 
 get '/testdb' => sub {
@@ -53,7 +59,12 @@ get '/testdb' => sub {
         q{SELECT * FROM userinfo LIMIT 1},
         $last_id
     );
-    return $c->render_json($row);
+
+    my $max_id = $c->db->select_row(
+        q{SELECT MAX(id) FROM user_info}
+    );
+
+    return $c->render_json($max_id);
 
 };
 
@@ -111,20 +122,20 @@ post '/user/register' => sub {
     return $c->render_json($row);    
 };
 
-#get '/user/{username}' => sub {
-#    my ($c, $args) = @_;
-#    my $key = $args->{username} || die "oops";
-#    my $row = $c->db->select_row(
-#        q{SELECT * FROM user_info WHERE name = ? LIMIT 1},
-#        $username
-#    );
+get '/user/{username}' => sub {
+    my ($c, $args) = @_;
+    my $key = $args->{username} || die "oops";
+    my $row = $c->db->select_row(
+        q{SELECT * FROM user_info WHERE name = ? LIMIT 1},
+        $username
+    );
 
-#    if($row) {
-#        return $c->render_json($row{'id'}) 
-#    } else {
-#        return $c->create_response(404, [www/x-form-urlencoded], ['Not Found']);
-#    }
-#};
+    if($row) {
+        return $c->render_json($row{'id'}) 
+    } else {
+        return $c->create_response(404, [www/x-form-urlencoded], ['Not Found']);
+    }
+};
 
 #----------------------------------------------------
 

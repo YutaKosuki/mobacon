@@ -118,9 +118,8 @@ post '/user/register' => sub {
    # my $txn = $c->db->txn_scope;
 
     $c->db->query(
-        q{INSERT INTO user_info (id, name, password, api_key , num_lend) VALUES (?, ?, ?, ? , ?);}, $id, $username, $password, $api_key, $lend_num
-    );
-    my $last_id = $c->db->last_insert_id;
+        q{INSERT INTO user_info (id, name, password, api_key , num_lend) VALUES (?, ?, ?, ? , ?);}, $id, $username, $password, $api_key, $lend_num );
+    #my $last_id = $c->db->last_insert_id;
 
     #$txn->commit;
 

@@ -98,16 +98,23 @@ post '/user/register' => sub {
     my $username = $c->req->param('username');
     my $password = $c->req->param('password');
 
+    my $serch_name = $->db->select_one(
+        q{SELECT name FROM user_info WHERE ?}, $username);
+
+    if($serch_name) {
+        return $c->create_response(409,['Content-Type' => 'www/x-form-urlencoded'], []); 
+    }
+
     my $max_id = $c->db->select_one(
         q{SELECT MAX(id) FROM user_info}
     );
 
     my $id = $max_id + 1;
     
-    my $api_key = md5_hex($username.$password);
+    my $api_key = unpack('H*', md5_hex($username.$password));
     my $lend_num = 0;
-
     my $txn = $c->db->txn_scope;
+
     $c->db->query(
         q{INSERT INTO user_info (id, name, password, api_key , num_lend) VALUES (?, ?, ?, ? , ?)}, $id, $username, $password, $api_key, $lend_num,
     );
@@ -119,6 +126,7 @@ post '/user/register' => sub {
         q{SELECT id, username, api_key FROM userinfo LIMIT 1},
         $last_id
     );
+
     return $c->render_json($row);    
 };
 

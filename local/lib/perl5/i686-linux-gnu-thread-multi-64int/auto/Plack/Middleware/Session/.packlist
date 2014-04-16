@@ -1,0 +1,10 @@
+/home/yuta/amon2lite_test/mobacon/local/lib/perl5/Plack/Middleware/Session.pm
+/home/yuta/amon2lite_test/mobacon/local/lib/perl5/Plack/Middleware/Session/Cookie.pm
+/home/yuta/amon2lite_test/mobacon/local/lib/perl5/Plack/Session.pm
+/home/yuta/amon2lite_test/mobacon/local/lib/perl5/Plack/Session/State.pm
+/home/yuta/amon2lite_test/mobacon/local/lib/perl5/Plack/Session/State/Cookie.pm
+/home/yuta/amon2lite_test/mobacon/local/lib/perl5/Plack/Session/Store.pm
+/home/yuta/amon2lite_test/mobacon/local/lib/perl5/Plack/Session/Store/Cache.pm
+/home/yuta/amon2lite_test/mobacon/local/lib/perl5/Plack/Session/Store/DBI.pm
+/home/yuta/amon2lite_test/mobacon/local/lib/perl5/Plack/Session/Store/File.pm
+/home/yuta/amon2lite_test/mobacon/local/lib/perl5/Plack/Session/Store/Null.pm

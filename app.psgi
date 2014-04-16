@@ -60,7 +60,7 @@ get '/testdb' => sub {
 #mobacon program-------------------------------------
 
 #data reset
-get '/reset' => sub {
+post '/admin/reset' => sub {
     my $c = shift;
     my $db = $c->db;
     my $txn = $db->txn_scope;

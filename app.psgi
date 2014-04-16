@@ -99,7 +99,7 @@ post '/user/register' => sub {
     my $password = $c->req->param('password');
 
     my $serch_name = $->db->select_one(
-        q{SELECT name FROM user_info WHERE ?}, $username);
+        q{SELECT name FROM user_info WHERE name = ?;}, $username);
 
     if($serch_name) {
         return $c->create_response(409,['Content-Type' => 'www/x-form-urlencoded'], []); 
@@ -116,7 +116,7 @@ post '/user/register' => sub {
     my $txn = $c->db->txn_scope;
 
     $c->db->query(
-        q{INSERT INTO user_info (id, name, password, api_key , num_lend) VALUES (?, ?, ?, ? , ?)}, $id, $username, $password, $api_key, $lend_num,
+        q{INSERT INTO user_info (id, name, password, api_key , num_lend) VALUES (?, ?, ?, ? , ?);}, $id, $username, $password, $api_key, $lend_num
     );
     my $last_id = $c->db->last_insert_id;
 

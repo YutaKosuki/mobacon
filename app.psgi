@@ -102,7 +102,9 @@ post '/user/register' => sub {
         q{SELECT name FROM user_info WHERE name = ?;}, $username);
 
     if($serch_name) {
-        return $c->create_response(409,['Content-Type' => 'www/x-form-urlencoded'], []); 
+        my $res = $c->render_json({message => "The name has already been registered."});
+        $res->status(409);
+	return $res;
     }
 
     my $max_id = $c->db->select_one(

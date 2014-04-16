@@ -26,7 +26,7 @@ sub load_config {
 
 get '/' => sub {
     my $c = shift;
-    return $c->render('index.tt');
+    return $c->create_response(200, [], ['Hello, world!amon2lite']);
 };
 
 # load plugins

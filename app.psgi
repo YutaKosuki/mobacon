@@ -43,7 +43,7 @@ get '/testdb' => sub {
     my $txn = $db->txn_scope;
 
     $db->query(
-        q{INSERT INTO userinfo (id, name, password, num_lend) VALUES (1, 'Yuta', 'aaa', 0)}
+        q{INSERT INTO userinfo (id, name, password, num_lend) VALUES (2, 'Yuta2', 'bbb', 0)}
     );
     my $last_id = $db->last_insert_id;
 

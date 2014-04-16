@@ -6,6 +6,8 @@ use File::Basename;
 use lib File::Spec->catdir(dirname(__FILE__), 'extlib', 'lib', 'perl5');
 use lib File::Spec->catdir(dirname(__FILE__), 'lib');
 use Amon2::Lite;
+use Teng;
+use Teng::Schema::Loader;
 
 our $VERSION = '0.12';
 
@@ -37,11 +39,22 @@ get '/testreturnjson' => sub {
     return $c->render_json(+{foo => 'bar'});
 };
 
+
+my $dsn = 'heroku_5fd41a1a4ef843f';
+my $user = 'b33182896a31b7';
+my $passwd = 'a87bd966';
+my $dbh = DBI->connect($dsn, $user, $passed, {'us-cdbr-east-05.cleardb.net' => 1,});
+my $teng
+
+get '/testdb' => sub {
+
+};
+
 # load plugins
 __PACKAGE__->load_plugin('Web::CSRFDefender' => {
     post_only => 1,
 });
-# __PACKAGE__->load_plugin('DBI');
+ __PACKAGE__->load_plugin('DBI');
 # __PACKAGE__->load_plugin('Web::FillInFormLite');
 # __PACKAGE__->load_plugin('Web::JSON');
 

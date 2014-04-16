@@ -113,7 +113,7 @@ post '/user/register' => sub {
 
     my $id = $max_id + 1;
     
-    my $api_key = unpack('H*', md5_hex($username.$password));
+    my $api_key = md5_hex($username.$password);
     my $lend_num = 0;
     my $txn = $c->db->txn_scope;
 
@@ -124,12 +124,9 @@ post '/user/register' => sub {
 
     $txn->commit;
 
-     my $row = $c->db->select_row(
-        q{SELECT id, username, api_key FROM userinfo LIMIT 1},
-        $last_id
-    );
-
-    return $c->render_json($row);    
+    return $c->render_json({
+        id => $id, username => $username, api_key => $api_key,
+    });    
 };
 
 get '/user/{username}' => sub {

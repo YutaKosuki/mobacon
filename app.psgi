@@ -63,8 +63,8 @@ get '/testdb' => sub {
 post '/admin/reset' => sub {
     my $c = shift;
     my $db = $c->db;
-    my $txn = $db->txn_scope;
 
+    my $txn = $db->txn_scope;
     my $last_id = $db->last_insert_id;
   
     $db->query(
@@ -81,6 +81,50 @@ post '/admin/reset' => sub {
    
      return $c->create_response(204, [], ['OK']);
 };
+
+post '/user/register' => sub {
+    my $c = shift;
+    my $username = $c->req->param('username');
+    my $password = $c->req->param('password');
+
+    my $max_id = $c->db->select_row(
+        q{SELECT MAX(id) FROM user_info}
+    );
+
+    my $id = $max_id + 1;
+    
+    my $api_key = md5_hex($username.$password);
+    my $lend_num = 0;
+
+    my $txn = $c->db->txn_scope;
+    $c->db->query(
+        q{INSERT INTO user_info (id, name, password, api_key , num_lend) VALUES (?, ?, ?, ? , ?)}, $id, $username, $password, $api_key, $lend_num,
+    );
+    my $last_id = $c->db->last_insert_id;
+
+    $txn->commit;
+
+     my $row = $c->db->select_row(
+        q{SELECT id, username, api_key FROM userinfo LIMIT 1},
+        $last_id
+    );
+    return $c->render_json($row);    
+};
+
+#get '/user/{username}' => sub {
+#    my ($c, $args) = @_;
+#    my $key = $args->{username} || die "oops";
+#    my $row = $c->db->select_row(
+#        q{SELECT * FROM user_info WHERE name = ? LIMIT 1},
+#        $username
+#    );
+
+#    if($row) {
+#        return $c->render_json($row{'id'}) 
+#    } else {
+#        return $c->create_response(404, [www/x-form-urlencoded], ['Not Found']);
+#    }
+#};
 
 #----------------------------------------------------
 

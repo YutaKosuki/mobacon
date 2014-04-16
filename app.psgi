@@ -27,15 +27,23 @@ sub load_config {
 get '/' => sub {
     my $c = shift;
     return $c->create_response(200, [], ['Hello, world!amon2lite']);
+#    my $result = $c->dbh->select_row_arrayref...
+};
+
+__PACKAGE__->load_plugins(qw/Web::JSON/);
+
+get '/testreturnjson' => sub {
+    my $c = shift;
+    return $c->render_json(+{foo => 'bar'});
 };
 
 # load plugins
 __PACKAGE__->load_plugin('Web::CSRFDefender' => {
     post_only => 1,
 });
-# __PACKAGE__->load_plugin('DBI');
-# __PACKAGE__->load_plugin('Web::FillInFormLite');
-# __PACKAGE__->load_plugin('Web::JSON');
+ __PACKAGE__->load_plugin('DBI');
+ __PACKAGE__->load_plugin('Web::FillInFormLite');
+ __PACKAGE__->load_plugin('Web::JSON');
 
 __PACKAGE__->enable_session();
 

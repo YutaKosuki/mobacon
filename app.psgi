@@ -98,10 +98,10 @@ post '/user/register' => sub {
     my $username = $c->req->param('username');
     my $password = $c->req->param('password');
 
-    my $serch_name = $->db->select_one(
-        q{SELECT name FROM user_info WHERE name = ?;}, $username);
+    my $exists = $->db->select_row(
+        q{SELECT id FROM user_info WHERE name = ?;}, $username);
 
-    if($serch_name) {
+    if($exists) {
         my $res = $c->render_json({message => "The name has already been registered."});
         $res->status(409);
 	return $res;
@@ -115,14 +115,14 @@ post '/user/register' => sub {
     
     my $api_key = md5_hex($username.$password);
     my $lend_num = 0;
-    my $txn = $c->db->txn_scope;
+   # my $txn = $c->db->txn_scope;
 
     $c->db->query(
         q{INSERT INTO user_info (id, name, password, api_key , num_lend) VALUES (?, ?, ?, ? , ?);}, $id, $username, $password, $api_key, $lend_num
     );
     my $last_id = $c->db->last_insert_id;
 
-    $txn->commit;
+    #$txn->commit;
 
     return $c->render_json({
         id => $id, username => $username, api_key => $api_key,

@@ -127,13 +127,13 @@ get '/user/{username}' => sub {
     my $key = $args->{username} || die "oops";
     my $row = $c->db->select_row(
         q{SELECT * FROM user_info WHERE name = ? LIMIT 1},
-        $username
+        $key,
     );
 
     if($row) {
-        return $c->render_json($row{'id'}) 
+        return $c->render_json($row) 
     } else {
-        return $c->create_response(404, [www/x-form-urlencoded], ['Not Found']);
+        return $c->create_response(404, ['www/x-form-urlencoded'], ['Not Found']);
     }
 };
 
